@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | View Message</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "SearchItem">Search Item</a></li>
+						<li><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "ReportSeller">Report Seller</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" id = "avatar_name">Buyer Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;"> Conversation Messages </span></div>
+						<div class="panel-body">
+							<div id = "messages_container">
+							</div>
+							<!--Outgoing message-->
+							<!--
+							<div class="media">
+								<div class="media-left">
+									<img src="../img/img_avatar1.png" class="media-object" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;">
+								</div>
+								<div class="media-left media-middle">
+									<span style = "font-weight: bold; font-size: 1.5em;" class = "glyphicon glyphicon-circle-arrow-right"></span>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">Mark Nagrampa |<small><i> <span class = "glyphicon glyphicon-envelope"></span> nbs@gmail.com | <span class = "glyphicon glyphicon-calendar"></span> Feb 19, 2016 - 8:15 am</i></small></h4>
+									<p class = "text-justify">
+										Grabe yung kanina ah. :-*
+									</p>
+								</div>
+							</div>
+							-->
+							<!--Incoming message-->
+							<!--
+							<div style = "margin-left: 4em;" class="media">
+								<div class="media-left media-middle">
+									<span style = "font-weight: bold; font-size: 1.5em;" class = "glyphicon glyphicon-circle-arrow-left"></span>
+								</div>
+								<div class="media-left">
+									<img src="../img/img_avatar4.png" class="media-object" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;">
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">Ivana Saberon |<small><i> <span class = "glyphicon glyphicon-envelope"></span> nbs@gmail.com | <span class = "glyphicon glyphicon-calendar"></span> Feb 19, 2016 - 8:15 am</i></small></h4>
+									<p class = "text-justify">
+										Ikaw rin kaya. :">
+									</p>
+								</div>
+							</div>
+							-->
+							<div id = "is_closed_prompt" class = "text-center" style = "margin-top: 1em;">
+							</div>
+							<div id = "alert_div">
+							</div>
+							<form onsubmit = "return false">
+							<div style = "margin-top: 2em;" class="form-group">
+								<textarea class="form-control" rows="5" maxlength = "2000" id="message" name = "message" placeholder="Please type your message here." required></textarea>
+							</div>
+							<div class = "text-center">
+								<button type="submit" id = "reply" class="btn btn-default btn-lg"><span class = "glyphicon glyphicon-comment"></span> Reply</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#SearchItem").click(function()
+		{
+			sessionStorage.removeItem("message_company_id");
+			window.location.replace("SearchItem.html");
+		});
+		
+		$("#Threads").click(function()
+		{
+			sessionStorage.removeItem("message_company_id");
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			sessionStorage.removeItem("message_company_id");
+			window.location.replace("Messages.html");
+		});
+		
+		$("#ReportSeller").click(function()
+		{
+			sessionStorage.removeItem("message_company_id");
+			window.location.replace("ReportSeller.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			sessionStorage.removeItem("message_company_id");
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "buyer"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Check if this page came from Message.html
+			if(sessionStorage.getItem("message_company_id") === null){
+				window.location.replace("Messages.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			// Load Item Thread Info
+			
+			var formData = new FormData();
+			formData.append("view_message", "set");
+			formData.append("user_id", user["user_id"]);
+			formData.append("message_company_id", sessionStorage.getItem("message_company_id"));
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "ViewMessage_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["messages"]){
+					
+						// Load comments
+						// A. Item Details
+						for(i = 0, len = obj["messages_count"]; i < len; i++){
+							if(obj["messages"][i]["is_sent_by_buyer"] == "1"){
+								var html_element = ' \
+										<div class="media" style = "margin-left: 4em;"> \
+											<div class="media-left media-middle"> \
+												<span style = "font-weight: bold; font-size: 1.5em;" class = "glyphicon glyphicon-circle-arrow-left"></span> \
+											</div> \
+											<div class="media-left"> \
+												<img src="'+user["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+											</div> \
+											<div class="media-body"> \
+												<h4 class="media-heading">'+user["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+user["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["messages"][i]["datetime_created"]+'</i></small></h4> \
+												<p class = "text-justify"> \
+													'+obj["messages"][i]["message"]+' \
+												</p> \
+											</div> \
+										</div> \
+									';
+							}
+							else{
+							
+								var html_element = ' \
+										<div class="media"> \
+											<div class="media-left"> \
+												<img src="'+obj["messages"][i]["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+											</div> \
+											<div class="media-left media-middle"> \
+												<span style = "font-weight: bold; font-size: 1.5em;" class = "glyphicon glyphicon-circle-arrow-right"></span> \
+											</div> \
+											<div class="media-body"> \
+												<h4 class="media-heading">'+obj["messages"][i]["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+obj["messages"][i]["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["messages"][i]["datetime_created"]+'</i></small></h4> \
+												<p class = "text-justify"> \
+													'+obj["messages"][i]["message"]+' \
+												</p> \
+											</div> \
+										</div> \
+									';
+							}
+							$("#messages_container").append(html_element);
+						}
+						
+						// B. Disable Messaging Controls if the other user is disabled
+						if(obj["message_user_is_active"] == "0"){
+							$("#reply").prop("disabled",true);
+							$("#message").prop("disabled",true);
+							$("#is_closed_prompt").html("<span style = 'font-style: italic; font-size: 1.25em;'><span class = 'glyphicon glyphicon-exclamation-sign'> </span> The other user's account has been disabled by the administrator. Sending messages is currently disabled.</span>");
+						}
+						
+						$("html").css("visibility","visible");
+					}
+					else{
+						window.location.replace("Messages.html");
+					}
+				}
+			});
+		});
+		
+		$("#reply").click(function()
+		{
+			
+			// Prepare Required Form Variables
+			var message = $("#message").val();
+			
+			if(message){
+				// Prepare record IDs
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				
+				// Create Form Data
+				var formData = new FormData();
+				formData.append("reply", "set");
+				formData.append("message",message);
+				formData.append("message_company_id", sessionStorage.getItem("message_company_id"));
+				formData.append("user_id", user["user_id"]);
+				
+				// Send AJAX request
+				$.ajax({
+					type: "POST",
+					url: "ViewMessage_action_page.php",
+					data: formData,             
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data)
+					{
+						console.log(data);
+						var obj = JSON.parse(data);
+						console.log(obj);
+						if(obj["alert"] == "danger"){
+						
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+						else if(obj["alert"] == "success"){					
+							
+							// Append latest message to the display
+							var html_element = ' \
+								<div class="media" style = "margin-left: 4em;"> \
+									<div class="media-left media-middle"> \
+										<span style = "font-weight: bold; font-size: 1.5em;" class = "glyphicon glyphicon-circle-arrow-left"></span> \
+									</div> \
+									<div class="media-left"> \
+										<img src="'+user["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+									</div> \
+									<div class="media-body"> \
+										<h4 class="media-heading">'+user["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+user["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["messages"]["datetime_created"]+'</i></small></h4> \
+										<p class = "text-justify"> \
+											'+obj["messages"]["message"]+' \
+										</p> \
+									</div> \
+								</div> \
+							';
+							$("#messages_container").append(html_element);
+							// Remove form content
+							$("#message").val("");
+							
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+					}
+				});
+			}
+		});
+	</script>
+</html>

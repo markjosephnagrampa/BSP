@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Threads</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li class = "active"><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Post_Item">Post Item</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "Report_Buyer">Report Buyer</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Seller Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-briefcase"></span> Company Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div id = "alert_div">
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Posted Threads </span></div>
+				<div class="panel-body">
+					<div class = "table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr style = "font-size: 1.25em;">
+									<th></th>
+									<th>Item Name</th>
+									<th>Date Posted</th>
+									<th>Status</th>
+									<th>View</th>
+									<th>Open</th>
+									<th>Close</th>
+								</tr>
+							</thead>
+							<tbody style = "font-size: 1em;" id = "posted_threads">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#Threads").click(function()
+		{
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Post_Item").click(function()
+		{
+			window.location.replace("PostItem.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			window.location.replace("Messages.html");
+		});
+		
+		$("#Report_Buyer").click(function()
+		{
+			window.location.replace("ReportBuyer.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null || sessionStorage.getItem("company") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			var company = JSON.parse(sessionStorage.getItem("company"));
+			
+			// Check Account Type
+			if(user["user_type"] != "seller"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(company["image_location"] != null && company["image_location"].length != 0){
+				$("#avatar_image").attr("src",company["image_location"]);
+			}
+			
+			$("#avatar_name").html(company["name"]+'<span class="caret"></span>');
+			
+			// Load the company's posted items
+			var formData = new FormData();
+			formData.append("Threads", "set");
+			formData.append("company_id", company["company_id"]);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Threads_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["item_threads_count"] != null){
+					
+						for(i = 0, len = obj["item_threads_count"]; i < len; i++){
+							var disableOpen = "";
+							var disableClosed = "";
+							// Disable Buttons Based on Thread Status
+							if(obj["item_threads"][i]["is_closed"] == "Open"){
+								disableOpen = "disabled";
+							}
+							else{
+								disableClosed = "disabled";
+							}
+							// Display item thread
+							var html_element = ' \
+								<tr> \
+									<td><img src = "'+obj["item_threads"][i]["image_location"]+'" class="small-image" id = "item_thread'+obj["item_threads"][i]["item_thread_id"]+'"></td> \
+									<td>'+obj["item_threads"][i]["book_title"]+'</td> \
+									<td>'+obj["item_threads"][i]["date_created"]+'</td> \
+									<td id = "item_thread_status'+obj["item_threads"][i]["item_thread_id"]+'">'+obj["item_threads"][i]["is_closed"]+'</td> \
+									<td><button type="submit" id = "view_item_thread'+obj["item_threads"][i]["item_thread_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-eye-open"></span></button></td> \
+									<td><button type="submit" '+disableOpen+' id = "open_item_thread'+obj["item_threads"][i]["item_thread_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-check"></span></button></td> \
+									<td><button type="submit" '+disableClosed+' id = "close_item_thread'+obj["item_threads"][i]["item_thread_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-ban-circle"></span></button></td> \
+								</tr> \
+								';
+							if(i == 0){
+								$("#posted_threads").html(html_element);
+							}
+							else{
+								$("#posted_threads").append(html_element);
+							}
+						}
+						if(obj["item_threads_count"] == "0"){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "7" class = "text-center" style = "font-size: 1.25em;">No threads found. Post items to see new threads.</td> \
+								</tr> \
+							';
+						
+							$("#posted_threads").html(html_element);
+						}
+					}
+				}
+			});
+			$("html").css("visibility","visible");
+		});
+		
+		// Toggle Selected Record on open button click
+		$(document).on("click", '[id^=open_item_thread]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("open_item", "set");
+			formData.append("item_thread_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Threads_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						//$("#alert_div").css("padding-top","50px");
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						
+						// Alter that row's display
+						$("#item_thread_status"+obj["id"]).html("Open");
+						$("#open_item_thread"+obj["id"]).prop("disabled",true);
+						$("#close_item_thread"+obj["id"]).prop("disabled",false);
+						
+						
+						//$("#alert_div").css("padding-top","50px");
+					}
+				}
+			});
+		});
+		
+		// Toggle Selected Record on close button click
+		$(document).on("click", '[id^=close_item_thread]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("close_item", "set");
+			formData.append("item_thread_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Threads_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						//$("#alert_div").css("padding-top","50px");
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						
+						// Alter that row's display
+						$("#item_thread_status"+obj["id"]).html("Closed");
+						$("#open_item_thread"+obj["id"]).prop("disabled",false);
+						$("#close_item_thread"+obj["id"]).prop("disabled",true);
+						
+						
+						//$("#alert_div").css("padding-top","50px");
+					}
+				}
+			});
+		});
+		
+		// Pass ID of selected thread to the view thread page
+		$(document).on("click", '[id^=view_item_thread]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			sessionStorage.removeItem("item_thread_id");
+			sessionStorage.setItem("item_thread_id",id);
+			window.location.replace("ViewThread.html");
+		});
+	</script>
+</html>

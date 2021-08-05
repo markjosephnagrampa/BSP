@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Post Item</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li class = "active"><a href="javascript:;" id = "Post_Item">Post Item</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "Report_Buyer">Report Buyer</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Seller Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-briefcase"></span> Company Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div id = "alert_div">
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Item Details </span></div>
+				<div class="panel-body">
+					<form class="form-horizontal" onsubmit = "return false">
+						<div class = "form-group">
+							<div class = "col-sm-12"><img id = "output" src = "https://via.placeholder.com/250" class="img-responsive" style = "max-height: 250px; max-width: 250px; margin: auto;"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="book_title"><span style = "color: red;">*</span> Book Title:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="book_title" name = "book_title" placeholder="Enter Book Title" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="author"><span style = "color: red;">*</span> Author:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="author" name = "author" placeholder="Enter Author" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="genre"><span style = "color: red;">*</span> Genre:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="genre" name = "genre" placeholder="Enter Genre" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="price"><span style = "color: red;">*</span> Price:</label>
+							<div class="col-sm-10">
+								<input type="number" step = ".01" class="form-control" id="price" name = "price" placeholder="Enter Price" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="binding_type"><span style = "color: red;">*</span> Binding Type:</label>
+							<div class="col-sm-10">
+								<select class="form-control" id="binding_type" required>
+									<option selected disabled>Select Binding Type</option>
+									<option value = "Case Binding (Hardcover)">Case Binding (Hardcover)</option>
+									<option value = "Perfect Binding (Softcover)">Perfect Binding (Softcover)</option>
+									<option value = "Saddle Stitch Binding">Saddle Stitch Binding</option>
+									<option value = "Spiral Binding">Spiral Binding</option>
+									<option value = "Other">Other</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="image"><span style = "color: red;">*</span> Image:</label>
+							<div class="col-sm-10">
+								<input class = "form-control" type="file" accept="image/*" name="image" id="image"  onchange="loadFile(event)" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-12" style = "text-align: center;">
+								<button type="submit" name = "btn_Post_Item" id = "btn_Post_Item" class="btn btn-success btn-lg">Post Item</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#Threads").click(function()
+		{
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Post_Item").click(function()
+		{
+			window.location.replace("PostItem.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			window.location.replace("Messages.html");
+		});
+		
+		$("#Report_Buyer").click(function()
+		{
+			window.location.replace("ReportBuyer.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null || sessionStorage.getItem("company") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			var company = JSON.parse(sessionStorage.getItem("company"));
+			
+			// Check Account Type
+			if(user["user_type"] != "seller"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			
+			if(company["image_location"] != null && company["image_location"].length != 0){
+				$("#avatar_image").attr("src",company["image_location"]);
+			}
+			
+			$("#avatar_name").html(company["name"]+'<span class="caret"></span>');
+			
+			$("html").css("visibility","visible");
+		});
+		
+		$("#btn_Post_Item").click(function()
+		{
+			
+			// Prepare Required Form Variables
+			var book_title = $("#book_title").val();
+			var author = $("#author").val();
+			var genre = $("#genre").val();
+			var price = $("#price").val();
+			var binding_type = $("#binding_type").val();
+			
+			// Prepare Image Variables
+			var image = $('#image').prop('files')[0];
+			var hasImage = ($('#image').get(0).files.length === 0) ? "false" : "true";
+			
+			if(book_title && author && genre && price && hasImage == "true" && $("#binding_type").prop('selectedIndex') != 0){
+				
+				// Prepare record IDs
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				var company = JSON.parse(sessionStorage.getItem("company"));
+				
+				// Create Form Data
+				var formData = new FormData();
+				formData.append("Post_Item", "set");
+				formData.append("book_title",book_title);
+				formData.append("author",author);
+				formData.append("genre",genre);
+				formData.append("price",price);
+				formData.append("binding_type",binding_type);
+				formData.append("image",image);
+				formData.append("hasImage",hasImage);
+				formData.append("user_id", user["user_id"]);
+				formData.append("company_id", company["company_id"]);
+				
+				// Send AJAX request
+				$.ajax({
+					type: "POST",
+					url: "PostItem_action_page.php",
+					data: formData,             
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data)
+					{
+						console.log(data);
+						var obj = JSON.parse(data);
+						console.log(obj);
+						if(obj["alert"] == "danger"){
+						
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+						else if(obj["alert"] == "success"){
+						
+							// Remove Form Input Data
+							$("#book_title").val("");
+							$("#author").val("");
+							$("#genre").val("");
+							$("#price").val("");
+							$("#binding_type").prop('selectedIndex', 0);
+							$("#image").val("");
+							$("#output").prop("src","https://via.placeholder.com/250");
+							
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+					}
+				});
+			}
+			// Required Select Value Check
+			else if($("#binding_type").prop('selectedIndex') == 0){
+				// Display alert message
+				var html_element = ' \
+						<div id = "alert" class="alert alert-danger fade in"> \
+								<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+								<strong>Please select a binding type.</strong> \
+							</div> \
+					';
+				$("#alert_div").html(html_element);
+				//$("#alert_div").css("padding-top","50px");
+			}
+		});
+	</script>
+</html>

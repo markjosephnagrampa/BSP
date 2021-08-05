@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Accounts</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "CompaniesForValidation">Companies for Validation</a></li>
+						<li><a href="javascript:;" id = "Announcements">Post Announcement</a></li>
+						<li class = "active"><a href="javascript:;" id = "Accounts">Accounts</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Admin Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class = "row">
+				<div class = "col-sm-12">
+					<div id = "alert_div1">
+					</div>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Sellers </span></div>
+						<div class="panel-body">
+							<div class = "table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr style = "font-size: 1.25em;">
+											<th></th>
+											<th>Company Name</th>
+											<th>Email</th>
+											<th>Account Status</th>
+											<th>Reports</th>
+											<th>View Reports</th>
+											<th>Activate</th>
+											<th>Deactivate</th>
+										</tr>
+									</thead>
+									<tbody style = "font-size: 1em;" id = "companies_container">
+										<!--
+										<tr>
+											<td><img src = "../img/img_avatar3.png" class="img-circle small-image"></td>
+											<td>National Book Store</td>
+											<td>nbs@gmail.com</td>
+											<td>Active</td>
+											<td><button type="button" class="btn btn-default"><span class = "glyphicon glyphicon-ok"></span></button></td>
+											<td><button type="button" class="btn btn-default"><span class = "glyphicon glyphicon-remove"></span></button></td>
+										</tr>
+										-->
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col-sm-12">
+					<div id = "alert_div2">
+					</div>
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col-sm-12">
+					<div class="panel panel-default" style = "margin-top: 2em;">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Buyers </span></div>
+						<div class="panel-body">
+							<div class = "table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr style = "font-size: 1.25em;">
+											<th></th>
+											<th>User Name</th>
+											<th>Email</th>
+											<th>Account Status</th>
+											<th>Reports</th>
+											<th>View Reports</th>
+											<th>Activate</th>
+											<th>Deactivate</th>
+										</tr>
+									</thead>
+									<tbody style = "font-size: 1em;" id = "users_container">
+										<!--
+										<tr>
+											<td><img src = "../img/img_avatar3.png" class="img-circle small-image"></td>
+											<td>Ivana Marriam B. Saberon</td>
+											<td>ivana@gmail.com</td>
+											<td>Active</td>
+											<td><button type="button" class="btn btn-default"><span class = "glyphicon glyphicon-ok"></span></button></td>
+											<td><button type="button" class="btn btn-default"><span class = "glyphicon glyphicon-remove"></span></button></td>
+										</tr>
+										-->
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		function hideAlert2(){
+			$("#alert2").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#CompaniesForValidation").click(function()
+		{
+			window.location.replace("CompaniesForValidation.html");
+		});
+		
+		$("#Announcements").click(function()
+		{
+			window.location.replace("Announcements.html");
+		});
+		
+		$("#Accounts").click(function()
+		{
+			window.location.replace("Accounts.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "admin"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			// Load Item Thread Info
+			
+			var formData = new FormData();
+			formData.append("Accounts", "set");
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Accounts_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["accounts"]){
+					
+						// Load companies
+						for(i = 0, len = obj["accounts"]["companies_count"]; i < len; i++){
+						
+							var disableOpen = "";
+							var disableClosed = "";
+							if(obj["accounts"]["companies"][i]["users_is_active"] == "Active"){
+								disableOpen = "disabled";
+							}
+							if(obj["accounts"]["companies"][i]["users_is_active"] == "Inactive"){
+								disableClosed = "disabled";
+							}
+							
+							var html_element = ' \
+									<tr id = "tr_company'+obj["accounts"]["companies"][i]["user_id"]+'"> \
+										<td><img src = "'+obj["accounts"]["companies"][i]["image_location"]+'" class="img-circle small-image"></td> \
+										<td>'+obj["accounts"]["companies"][i]["name"]+'</td> \
+										<td>'+obj["accounts"]["companies"][i]["email"]+'</td> \
+										<td id = "td_company_is_active'+obj["accounts"]["companies"][i]["user_id"]+'">'+obj["accounts"]["companies"][i]["users_is_active"]+'</td> \
+										<td>'+obj["accounts"]["companies"][i]["complaints_count"]+'</td> \
+										<td><button type="button" id = "view_company'+obj["accounts"]["companies"][i]["user_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-eye-open"></span></button></td> \
+										<td><button type="button" id = "activate_company'+obj["accounts"]["companies"][i]["user_id"]+'" class="btn btn-default" '+disableOpen+'><span class = "glyphicon glyphicon-ok"></span></button></td> \
+										<td><button type="button" id = "deactivate_company'+obj["accounts"]["companies"][i]["user_id"]+'" class="btn btn-default" '+disableClosed+'><span class = "glyphicon glyphicon-remove"></span></button></td> \
+									</tr> \
+								';
+							
+							$("#companies_container").append(html_element);
+						}
+						
+						if(obj["accounts"]["companies_count"] == 0){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "8" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No seller accounts found.</span></td> \
+								</tr> \
+							';
+							$("#companies_container").html(html_element);
+						}
+						
+						// Load buyers
+						for(i = 0, len = obj["accounts"]["users_count"]; i < len; i++){
+						
+							var disableOpen = "";
+							var disableClosed = "";
+							if(obj["accounts"]["users"][i]["is_active"] == "Active"){
+								disableOpen = "disabled";
+							}
+							if(obj["accounts"]["users"][i]["is_active"] == "Inactive"){
+								disableClosed = "disabled";
+							}
+							
+							var html_element = ' \
+									<tr id = "tr_user'+obj["accounts"]["users"][i]["user_id"]+'"> \
+										<td><img src = "'+obj["accounts"]["users"][i]["image_location"]+'" class="img-circle small-image"></td> \
+										<td>'+obj["accounts"]["users"][i]["name"]+'</td> \
+										<td>'+obj["accounts"]["users"][i]["email"]+'</td> \
+										<td id = "td_user_is_active'+obj["accounts"]["users"][i]["user_id"]+'">'+obj["accounts"]["users"][i]["is_active"]+'</td> \
+										<td>'+obj["accounts"]["users"][i]["complaints_count"]+'</td> \
+										<td><button type="button" id = "view_user_'+obj["accounts"]["users"][i]["user_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-eye-open"></span></button></td> \
+										<td><button type="button" id = "activate_user'+obj["accounts"]["users"][i]["user_id"]+'" class="btn btn-default" '+disableOpen+'><span class = "glyphicon glyphicon-ok"></span></button></td> \
+										<td><button type="button" id = "deactivate_user'+obj["accounts"]["users"][i]["user_id"]+'" class="btn btn-default" '+disableClosed+'><span class = "glyphicon glyphicon-remove"></span></button></td> \
+									</tr> \
+								';
+							
+							$("#users_container").append(html_element);
+						}
+						
+						if(obj["accounts"]["users_count"] == "0"){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "8" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No buyer accounts found.</span></td> \
+								</tr> \
+							';
+							$("#users_container").html(html_element);
+						}
+						
+						$("html").css("visibility","visible");
+					}
+				}
+			});
+		});
+		
+		// Toggle Selected Record on open button click
+		$(document).on("click", '[id^=activate_user]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("activate_user", "set");
+			formData.append("user_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Accounts_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert2" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert2();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div2").html(html_element);
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert2" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert2();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div2").html(html_element);
+						
+						// Toggle that row's controls
+						$("#td_user_is_active"+obj["id"]).html("Active");
+						$("#activate_user"+obj["id"]).prop("disabled",true);
+						$("#deactivate_user"+obj["id"]).prop("disabled",false);
+					}
+				}
+			});
+		});
+		
+		// Toggle Selected Record on open button click
+		$(document).on("click", '[id^=deactivate_user]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("deactivate_user", "set");
+			formData.append("user_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Accounts_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert2" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert2();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div2").html(html_element);
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert2" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert2();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div2").html(html_element);
+						
+						// Toggle that row's controls
+						$("#td_user_is_active"+obj["id"]).html("Inactive");
+						$("#activate_user"+obj["id"]).prop("disabled",false);
+						$("#deactivate_user"+obj["id"]).prop("disabled",true);
+					}
+				}
+			});
+		});
+		
+		// Toggle Selected Record on open button click
+		$(document).on("click", '[id^=activate_company]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("activate_company", "set");
+			formData.append("user_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Accounts_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div1").html(html_element);
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div1").html(html_element);
+						
+						// Toggle that row's controls
+						$("#td_company_is_active"+obj["id"]).html("Active");
+						$("#activate_company"+obj["id"]).prop("disabled",true);
+						$("#deactivate_company"+obj["id"]).prop("disabled",false);
+					}
+				}
+			});
+		});
+		
+		// Toggle Selected Record on open button click
+		$(document).on("click", '[id^=deactivate_company]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("deactivate_company", "set");
+			formData.append("user_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Accounts_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div1").html(html_element);
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div1").html(html_element);
+						
+						// Toggle that row's controls
+						$("#td_company_is_active"+obj["id"]).html("Inactive");
+						$("#activate_company"+obj["id"]).prop("disabled",false);
+						$("#deactivate_company"+obj["id"]).prop("disabled",true);
+					}
+				}
+			});
+		});
+		
+		// Pass ID of selected thread to the view thread page
+		$(document).on("click", '[id^=view_user]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			sessionStorage.removeItem("accounts_id");
+			sessionStorage.setItem("accounts_id",id);
+			sessionStorage.removeItem("is_company");
+			sessionStorage.setItem("is_company","false");
+			window.location.replace("ViewComplaint.html");
+		});
+		
+		// Pass ID of selected thread to the view thread page
+		$(document).on("click", '[id^=view_company]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			sessionStorage.removeItem("accounts_id");
+			sessionStorage.setItem("accounts_id",id);
+			sessionStorage.removeItem("is_company");
+			sessionStorage.setItem("is_company","true");
+			window.location.replace("ViewComplaint.html");
+		});
+	</script>
+</html>

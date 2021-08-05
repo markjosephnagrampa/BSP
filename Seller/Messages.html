@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Messages</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Post_Item">Post Item</a></li>
+						<li class = "active"><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "Report_Buyer">Report Buyer</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Seller Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-briefcase"></span> Company Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div id = "alert_div">
+			</div>
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">New Message </span></div>
+						<div class="panel-body">
+							<form class = "form-horizontal" onsubmit = "return false">
+								<div class = "form-group">
+									<label class="control-label col-sm-2" for="email"><span style = "color: red;">*</span> Buyer's Email:</label>
+									<div class="col-sm-10">
+									  <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+									</div>
+								</div>
+								<div class = "form-group">
+									<label class="control-label col-sm-2" for="message"><span style = "color: red;">*</span> Message:</label>
+									<div class="col-sm-10">
+									  <textarea class="form-control" rows="5" maxlength = "2000" id="message" name = "message" placeholder="Please type your message here." required></textarea>
+									</div>
+								</div>
+								<div class = "form-group">
+									<div class="col-sm-12 text-center">
+									  <button type="submit" id = "send" class="btn btn-lg btn-default"><span class = "glyphicon glyphicon-comment"></span> Send</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Messages </span></div>
+						<div class="panel-body">
+							<table class = "table table-responsive table-hover">
+								<thead>
+									<tr style = "font-size: 1.25em;">
+										<th>User</th>
+										<th>View Conversation</th>
+									</tr>
+								</thead>
+								<tbody id = "message_container">
+									<!--
+									<tr>
+										
+										<td>
+											<div class="media">
+												<div class="media-left">
+													<img src="../img/img_avatar1.png" class="media-object" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;">
+												</div>
+												<div class="media-body">
+													<h4 class="media-heading">John Doe |<small><i> <span class = "glyphicon glyphicon-envelope"></span> nbs@gmail.com | <span class = "glyphicon glyphicon-calendar"></span> Feb 19, 2016 - 8:15 am</i></small></h4>
+													<p class = "text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+													</p>
+												</div>
+											</div>
+										</td>
+										<td>
+											<button type="button" id = "message1" class="btn btn-default"><span class = "glyphicon glyphicon-comment"></span> View</button>
+										</td>
+										
+									</tr> -->
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#Threads").click(function()
+		{
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Post_Item").click(function()
+		{
+			window.location.replace("PostItem.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			
+			window.location.replace("Messages.html");
+		});
+		
+		$("#Report_Buyer").click(function()
+		{
+			
+			window.location.replace("ReportBuyer.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null || sessionStorage.getItem("company") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			var company = JSON.parse(sessionStorage.getItem("company"));
+			
+			// Check Account Type
+			if(user["user_type"] != "seller"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(company["image_location"] != null && company["image_location"].length != 0){
+				$("#avatar_image").attr("src",company["image_location"]);
+			}
+			
+			$("#avatar_name").html(company["name"]+'<span class="caret"></span>');
+			
+			// Load the company's messages
+			var formData = new FormData();
+			formData.append("Messages", "set");
+			formData.append("company_id", company["company_id"]);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Messages_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					
+					if(obj["announcement"] != null){
+						// Display message
+							var html_element = ' \
+								<tr> \
+									<td id = "announcement_td'+obj["announcement"]["user_id"]+'"> \
+										<div class="media"> \
+											<div class="media-left"> \
+												<img src="'+obj["announcement"]["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+											</div> \
+											<div class = "media-left media-middle"> \
+												<span class = "glyphicon glyphicon-circle-arrow-right" style = "font-size: 1.25em;"></span> \
+											</div> \
+											<div class="media-body"> \
+												<h4 class="media-heading">Admin | '+obj["announcement"]["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+obj["announcement"]["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["announcement"]["datetime_created"]+'</i></small></h4> \
+												<p class = "text-justify">'+obj["announcement"]["message"]+' \
+												</p> \
+											</div> \
+										</div> \
+									</td> \
+									<td> \
+										<button type="button" id = "btn_announcement'+obj["announcement"]["user_id"]+'" class="btn btn-default" disabled><span class = "glyphicon glyphicon-comment"></span> View</button> \
+									</td> \
+								</tr> \
+							';
+							
+							$("#message_container").append(html_element);
+					}
+					
+					if(obj["messages"] != null){
+					
+						for(i = 0, len = obj["messages_count"]; i < len; i++){
+						
+							// Display message
+							var html_element = ' \
+								<tr> \
+									<td id = "message_td'+obj["messages"][i]["user_id"]+'"> \
+										<div class="media"> \
+											<div class="media-left"> \
+												<img src="'+obj["messages"][i]["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+											</div> \
+											<div class = "media-left media-middle"> \
+												<span class = "glyphicon glyphicon-circle-arrow-'+obj["messages"][i]["is_sent_by_buyer"]+'" style = "font-size: 1.25em;"></span> \
+											</div> \
+											<div class="media-body"> \
+												<h4 class="media-heading">'+obj["messages"][i]["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+obj["messages"][i]["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["messages"][i]["datetime_created"]+'</i></small></h4> \
+												<p class = "text-justify">'+obj["messages"][i]["message"]+' \
+												</p> \
+											</div> \
+										</div> \
+									</td> \
+									<td> \
+										<button type="button" id = "message_user'+obj["messages"][i]["user_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-comment"></span> View</button> \
+									</td> \
+								</tr> \
+							';
+							
+							$("#message_container").append(html_element);
+						}
+					}
+					if(obj["messages"] == null && obj["announcement"] == null){
+						var html_element = ' \
+							<tr> \
+								<td colspan = "2" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No messages found.</span></td> \
+							</tr> \
+						';
+						$("#message_container").html(html_element);
+					}
+				}
+			});
+			$("html").css("visibility","visible");
+		});
+		
+		$("#send").click(function()
+		{
+			
+			// Prepare Required Form Variables
+			var email = $("#email").val();
+			var message = $("#message").val();
+			
+			if(email && message){
+				// Prepare record IDs
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				var company = JSON.parse(sessionStorage.getItem("company"));
+				
+				// Create Form Data
+				var formData = new FormData();
+				formData.append("send", "set");
+				formData.append("email",email);
+				formData.append("message",message);
+				formData.append("user_id", user["user_id"]);
+				formData.append("company_id", company["company_id"]);
+				
+				// Send AJAX request
+				$.ajax({
+					type: "POST",
+					url: "Messages_action_page.php",
+					data: formData,             
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data)
+					{
+						console.log(data);
+						var obj = JSON.parse(data);
+						console.log(obj);
+						if(obj["alert"] == "danger"){
+						
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+						else if(obj["alert"] == "success"){
+						
+							// Check if messages record should be replaced
+							if($("#message_td"+obj["messages"]["user_id"]).html() != null) {
+								// Replace last message
+								var html_element = ' \
+										<div class="media"> \
+											<div class="media-left"> \
+												<img src="'+obj["messages"]["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+											</div> \
+											<div class = "media-left media-middle"> \
+												<span class = "glyphicon glyphicon-circle-arrow-'+obj["messages"]["is_sent_by_buyer"]+'" style = "font-size: 1.25em;"></span> \
+											</div> \
+											<div class="media-body"> \
+												<h4 class="media-heading">'+obj["messages"]["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+obj["messages"]["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["messages"]["datetime_created"]+'</i></small></h4> \
+												<p class = "text-justify">'+obj["messages"]["message"]+' \
+												</p> \
+											</div> \
+										</div> \
+								';
+								$("#message_td"+obj["messages"]["user_id"]).html(html_element);
+							} 
+							
+							// Append new conversation to display
+							else{
+								var html_element = ' \
+								<tr> \
+									<td id = "message_td'+obj["messages"]["user_id"]+'"> \
+										<div class="media"> \
+											<div class="media-left"> \
+												<img src="'+obj["messages"]["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+											</div> \
+											<div class = "media-left media-middle"> \
+												<span class = "glyphicon glyphicon-circle-arrow-'+obj["messages"]["is_sent_by_buyer"]+'" style = "font-size: 1.25em;"></span> \
+											</div> \
+											<div class="media-body"> \
+												<h4 class="media-heading">'+obj["messages"]["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+obj["messages"]["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["messages"]["datetime_created"]+'</i></small></h4> \
+												<p class = "text-justify">'+obj["messages"]["message"]+' \
+												</p> \
+											</div> \
+										</div> \
+									</td> \
+									<td> \
+										<button type="button" id = "message_user'+obj["messages"]["user_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-comment"></span> View</button> \
+									</td> \
+								</tr> \
+								';
+								$("#message_container").append(html_element);
+							}
+							// Remove form content
+							$("#message").val("");
+							$("#email").val("");
+							
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+					}
+				});
+			}
+		});
+		
+		// Pass ID of selected thread to the view thread page
+		$(document).on("click", '[id^=message_user]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			sessionStorage.removeItem("message_user_id");
+			sessionStorage.setItem("message_user_id",id);
+			window.location.replace("ViewMessage.html");
+		});
+		
+	</script>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Search Item</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			.collapse-row.collapsed + tr {
+			display: none;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li class = "active"><a href="javascript:;" id = "SearchItem">Search Item</a></li>
+						<li><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "ReportSeller">Report Seller</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" id = "avatar_name">Buyer Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class = "container">
+			<div class = "row">
+				<div class = "col-sm-10">
+					<input type="text" class="form-control input-lg" id="search_bar" placeholder="Enter Item Details">
+				</div>
+				<div class = "col-sm-2">
+					<button type="button" id = "search" class="btn btn-success btn-lg"><span class = "glyphicon glyphicon-search"></span> Search</button>
+				</div>
+			</div>
+			<div class = "row" style = "margin-top: 1em;">
+				<div id = "alert_div">
+				</div>
+			</div>
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-12">
+					<div id="accordion">
+						<table class="table table-hover">
+							<thead>
+								<tr style = "font-size: 1.25em;">
+									<th colspan = "2">Seller</th>
+									<th>Book Title</th>
+									<th>Price</th>
+									<th>View Details</th>
+								</tr>
+							</thead>
+							<tbody id = "items_container">
+								<!--
+								<tr data-toggle="collapse" data-target="#collapse1" class="clickable collapse-row collapsed">
+									<td><img src="../img/company-1.jpg" class = "img-responsive img-circle" alt="Nature" style="height: 32px; width: 32px; max-height: 32px; max-width: 32px;"></td>
+									<td>National Book Store</td>
+									<td>The Art of Thinking Clearly</td>
+									<td>Php 500.00</td>
+									<td><button class = "btn btn-default" data-toggle="collapse" data-parent="#accordion" href="#collapse1"><span class = "glyphicon glyphicon-eye-open"></span></button></td>
+								</tr>
+								<tr>
+									<td colspan = "5">
+										<div class="panel panel-default">
+											<div id="collapse1" class="panel-collapse collapse">
+												<div class="panel-body">
+													<div class="thumbnail" style = "width: 200px; max-width: 200px; margin: auto;">
+														<a href="../img/carousel-1.jpg">
+														<img src="../img/carousel-3.jpg" class = "img-responsive" alt="Nature" style="width:100%">
+														</a>
+													</div>
+													<table class = "table table-bordered" style = "margin-top: 1em;">
+														<tr>
+															<th>Book Title:</th>
+															<td>Treasure Island</td>
+														</tr>
+														<tr>
+															<th>Author:</th>
+															<td>Charles Duhigg</td>
+														</tr>
+														<tr>
+															<th>Genre:</th>
+															<td>Fantasy</td>
+														</tr>
+														<tr>
+															<th>Price:</th>
+															<td>Php 500.00</td>
+														</tr>
+														<tr>
+															<th>Binding Type:</th>
+															<td>Perfect Binding (Softcover)</td>
+														</tr>
+													</table>
+													<div class = "text-center">
+														<span class = "glyphicon glyphicon-comment"></span> 122 &emsp; <span class = "glyphicon glyphicon-calendar"></span> Posted on Feb 19, 2016
+													</div>
+													<br>
+													<div class = "text-center">
+														<button type="submit" class="btn btn-info" onclick="document.location='ViewThread.html'"><span class = "glyphicon glyphicon-circle-arrow-right"></span> View Thread</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								-->
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#SearchItem").click(function()
+		{
+			window.location.replace("SearchItem.html");
+		});
+		
+		$("#Threads").click(function()
+		{
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			window.location.replace("Messages.html");
+		});
+		
+		$("#ReportSeller").click(function()
+		{
+			window.location.replace("ReportSeller.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "buyer"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			// Load Item Thread Info
+			
+			var formData = new FormData();
+			formData.append("search_item", "set");
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "SearchItem_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["item_threads"]){
+					
+						// Load item_thread record
+						for(i = 0, len = obj["item_threads_count"]; i < len; i++){
+						
+							var html_element = ' \
+								<tr data-toggle="collapse" data-target="#collapse'+obj["item_threads"][i]["item_thread_id"]+'" class="clickable collapse-row collapsed"> \
+									<td><img src="'+obj["item_threads"][i]["company_image_location"]+'" class = "img-responsive img-circle" alt="'+obj["item_threads"][i]["name"]+'" style="height: 32px; width: 32px; max-height: 32px; max-width: 32px;"></td> \
+									<td>'+obj["item_threads"][i]["name"]+'</td> \
+									<td>'+obj["item_threads"][i]["book_title"]+'</td> \
+									<td>Php '+obj["item_threads"][i]["price"]+'</td> \
+									<td><button class = "btn btn-default" data-toggle="collapse" data-parent="#accordion" href="#collapse'+obj["item_threads"][i]["item_thread_id"]+'"><span class = "glyphicon glyphicon-eye-open"></span></button></td> \
+								</tr> \
+								<tr> \
+									<td colspan = "5"> \
+										<div class="panel panel-default"> \
+											<div id="collapse'+obj["item_threads"][i]["item_thread_id"]+'" class="panel-collapse collapse"> \
+												<div class="panel-body"> \
+													<div class="thumbnail" style = "width: 200px; max-width: 200px; margin: auto;"> \
+														<a href="'+obj["item_threads"][i]["image_location"]+'" target = "_blank"> \
+														<img src="'+obj["item_threads"][i]["image_location"]+'" class = "img-responsive" alt="'+obj["item_threads"][i]["book_title"]+'" style="width:100%"> \
+														</a> \
+													</div> \
+													<table class = "table table-bordered" style = "margin-top: 1em;"> \
+														<tr> \
+															<th>Book Title:</th> \
+															<td>'+obj["item_threads"][i]["book_title"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Author:</th> \
+															<td>'+obj["item_threads"][i]["author"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Genre:</th> \
+															<td>'+obj["item_threads"][i]["genre"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Price:</th> \
+															<td>Php '+obj["item_threads"][i]["price"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Binding Type:</th> \
+															<td>'+obj["item_threads"][i]["binding_type"]+'</td> \
+														</tr> \
+													</table> \
+													<div class = "text-center"> \
+														<span class = "glyphicon glyphicon-comment"></span> '+obj["item_threads"][i]["comment_count"]+' &emsp; <span class = "glyphicon glyphicon-calendar"></span> Posted on '+obj["item_threads"][i]["date_created"]+' \
+													</div> \
+													<br> \
+													<div class = "text-center"> \
+														<button type="button" class="btn btn-info" id = "view_item_thread'+obj["item_threads"][i]["item_thread_id"]+'"><span class = "glyphicon glyphicon-circle-arrow-right"></span> View Thread</button> \
+													</div> \
+												</div> \
+											</div> \
+										</div> \
+									</td> \
+								</tr> \
+							';
+							$("#items_container").append(html_element);
+						}
+						
+						if(obj["item_threads_count"] == 0){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "5" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No items found.</td> \
+								</tr> \
+							';
+						$("#items_container").html(html_element);
+						}
+						
+						$("html").css("visibility","visible");
+					}
+				}
+			});
+		});
+		
+		$("#search").click(function()
+		{
+			var formData = new FormData();
+			formData.append("search", "set");
+			formData.append("search_bar", $("#search_bar").val());
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "SearchItem_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["item_threads"]){
+					
+						// Load item_thread record
+						for(i = 0, len = obj["item_threads_count"]; i < len; i++){
+						
+							var html_element = ' \
+								<tr data-toggle="collapse" data-target="#collapse'+obj["item_threads"][i]["item_thread_id"]+'" class="clickable collapse-row collapsed"> \
+									<td><img src="'+obj["item_threads"][i]["company_image_location"]+'" class = "img-responsive img-circle" alt="'+obj["item_threads"][i]["name"]+'" style="height: 32px; width: 32px; max-height: 32px; max-width: 32px;"></td> \
+									<td>'+obj["item_threads"][i]["name"]+'</td> \
+									<td>'+obj["item_threads"][i]["book_title"]+'</td> \
+									<td>Php '+obj["item_threads"][i]["price"]+'</td> \
+									<td><button class = "btn btn-default" data-toggle="collapse" data-parent="#accordion" href="#collapse'+obj["item_threads"][i]["item_thread_id"]+'"><span class = "glyphicon glyphicon-eye-open"></span></button></td> \
+								</tr> \
+								<tr> \
+									<td colspan = "5"> \
+										<div class="panel panel-default"> \
+											<div id="collapse'+obj["item_threads"][i]["item_thread_id"]+'" class="panel-collapse collapse"> \
+												<div class="panel-body"> \
+													<div class="thumbnail" style = "width: 200px; max-width: 200px; margin: auto;"> \
+														<a href="'+obj["item_threads"][i]["image_location"]+'" target = "_blank"> \
+														<img src="'+obj["item_threads"][i]["image_location"]+'" class = "img-responsive" alt="'+obj["item_threads"][i]["book_title"]+'" style="width:100%"> \
+														</a> \
+													</div> \
+													<table class = "table table-bordered" style = "margin-top: 1em;"> \
+														<tr> \
+															<th>Book Title:</th> \
+															<td>'+obj["item_threads"][i]["book_title"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Author:</th> \
+															<td>'+obj["item_threads"][i]["author"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Genre:</th> \
+															<td>'+obj["item_threads"][i]["genre"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Price:</th> \
+															<td>Php '+obj["item_threads"][i]["price"]+'</td> \
+														</tr> \
+														<tr> \
+															<th>Binding Type:</th> \
+															<td>'+obj["item_threads"][i]["binding_type"]+'</td> \
+														</tr> \
+													</table> \
+													<div class = "text-center"> \
+														<span class = "glyphicon glyphicon-comment"></span> '+obj["item_threads"][i]["comment_count"]+' &emsp; <span class = "glyphicon glyphicon-calendar"></span> Posted on '+obj["item_threads"][i]["date_created"]+' \
+													</div> \
+													<br> \
+													<div class = "text-center"> \
+														<button type="button" class="btn btn-info" id = "view_item_thread'+obj["item_threads"][i]["item_thread_id"]+'"><span class = "glyphicon glyphicon-circle-arrow-right"></span> View Thread</button> \
+													</div> \
+												</div> \
+											</div> \
+										</div> \
+									</td> \
+								</tr> \
+							';
+							if(i == 0){
+								$("#items_container").html(html_element);
+							}
+							else{
+								$("#items_container").append(html_element);
+							}
+						}
+						
+						if(obj["item_threads_count"] == 0){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "5" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No items found.</td> \
+								</tr> \
+							';
+						$("#items_container").html(html_element);
+						}
+						
+						$("html").css("visibility","visible");
+					}
+				}
+			});
+		});
+		
+		// Pass ID of selected thread to the view thread page
+		$(document).on("click", '[id^=view_item_thread]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			sessionStorage.removeItem("item_thread_id");
+			sessionStorage.setItem("item_thread_id",id);
+			window.location.replace("ViewThread.html");
+		});
+	</script>
+</html>

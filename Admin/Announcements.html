@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Announcements</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "CompaniesForValidation">Companies for Validation</a></li>
+						<li class = "active"><a href="javascript:;" id = "Announcements">Post Announcement</a></li>
+						<li><a href="javascript:;" id = "Accounts">Accounts</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Admin Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class = "row">
+				<div class = "col-sm-2">
+					&nbsp;
+				</div>
+				<div class = "col-sm-8">
+					<div id = "alert_div">
+					</div>
+				</div>
+				<div class = "col-sm-2">
+					&nbsp;
+				</div>
+			</div>
+			<div class = "row">
+				<div class = "col-sm-2">
+					&nbsp;
+				</div>
+				<div class = "col-sm-8">
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Announcement</span></div>
+						<div class="panel-body">
+							<form onsubmit = "return false">
+								<div class="form-group">
+									<label for="comment">Message:</label>
+									<textarea class="form-control" rows="5" maxlength = "2000" id="comment" name = "comment" required></textarea>
+								</div>
+								<div class = "text-center"><button type="submit" id = "post_btn" class="btn btn-success">Post</button></div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class = "col-sm-2">
+					&nbsp;
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#CompaniesForValidation").click(function()
+		{
+			window.location.replace("CompaniesForValidation.html");
+		});
+		
+		$("#Announcements").click(function()
+		{
+			window.location.replace("Announcements.html");
+		});
+		
+		$("#Accounts").click(function()
+		{
+			window.location.replace("Accounts.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "admin"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			$("html").css("visibility","visible");
+		});
+		
+		$("#post_btn").click(function()
+		{
+			
+			// Prepare Required Form Variables
+			var comment = $("#comment").val();
+			
+			if(comment){
+				// Prepare record IDs
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				
+				// Create Form Data
+				var formData = new FormData();
+				formData.append("post_btn", "set");
+				formData.append("comment",comment);
+				formData.append("user_id", user["user_id"]);
+				
+				// Send AJAX request
+				$.ajax({
+					type: "POST",
+					url: "Announcements_action_page.php",
+					data: formData,             
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data)
+					{
+						console.log(data);
+						var obj = JSON.parse(data);
+						console.log(obj);
+						if(obj["alert"] == "danger"){
+						
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+						else if(obj["alert"] == "success"){
+						
+							// Remove Form Input Data
+							$("#comment").val("");
+							
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+					}
+				});
+			}
+		});
+	</script>
+</html>

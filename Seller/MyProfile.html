@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Company Profile</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Post_Item">Post Item</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "Report_Buyer">Report Buyer</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Seller Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-briefcase"></span> Company Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div id = "alert_div">
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading"><span style = "font-weight: bold; font-size: 1.25em;">My Profile </span></div>
+				<div class="panel-body">
+					<form class="form-horizontal" onsubmit = "return false">
+						<div class = "form-group">
+							<div class = "col-sm-12"><img id = "output" src = "https://via.placeholder.com/250" class="img-responsive img-circle" style = "max-height: 250px; max-width: 250px; margin: auto;"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="name">Name:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="name" name = "name" placeholder="" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="email">Email:</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control" id="email" name = "email" placeholder="" disabled>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="contact_no"><span style = "color: red;">*</span> Contact No:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="contact_no" name = "contact_no" placeholder = "Enter contact no." required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="address"><span style = "color: red;">*</span> Address:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="address" name = "address" placeholder = "Enter address" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="user_name"><span style = "color: red;">*</span> Contact Person:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="user_name" name = "user_name" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="contact_no"><span style = "color: red;">*</span> Contact Person No:</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="user_contact_no" name = "user_contact_no" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="password"><span style = "color: red;">*</span> Password:</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="password" name = "password" placeholder="Enter password" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="c_password"><span style = "color: red;">*</span> Confirm Password:</label>
+							<div class="col-sm-10">
+								<input type="password" class="form-control" id="c_password" name = "c_password" placeholder="Enter password" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="pwd">Image:</label>
+							<div class="col-sm-10">
+								<input class = "form-control" type="file" accept="image/*" name="image" id="image"  onchange="loadFile(event)">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-12" style = "text-align: center;">
+								<button type="submit" id="update" name = "update" class="btn btn-success btn-lg">Update</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#Threads").click(function()
+		{
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Post_Item").click(function()
+		{
+			window.location.replace("PostItem.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			window.location.replace("Messages.html");
+		});
+		
+		$("#Report_Buyer").click(function()
+		{
+			window.location.replace("ReportBuyer.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null || sessionStorage.getItem("company") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			var company = JSON.parse(sessionStorage.getItem("company"));
+			
+			// Check Account Type
+			if(user["user_type"] != "seller"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			$("#name").val(company["name"]);
+			$("#email").val(company["email"]);
+			$("#contact_no").val(company["contact_no"]);
+			$("#address").val(company["address"]);
+			if(company["image_location"] != null && company["image_location"].length != 0){
+				$("#avatar_image").attr("src",company["image_location"]);
+				$("#output").attr("src",company["image_location"]);
+			}
+			
+			// Load personalized data on the profile page
+			$("#user_name").val(user["name"]);
+			$("#user_contact_no").val(user["contact_no"]);
+			$("#avatar_name").html(company["name"]+'<span class="caret"></span>');
+			
+			$("html").css("visibility","visible");
+		});
+		
+		$("#update").click(function()
+		{
+			
+			// Prepare Required Form Variables
+			var contact_no = $("#contact_no").val();
+			var address = $("#address").val();
+			var user_name = $("#user_name").val();
+			var user_contact_no = $("#user_contact_no").val();
+			var password = $("#password").val();
+			var c_password = $("#c_password").val();
+			
+			if(contact_no && address && user_name && user_contact_no && password && c_password){
+				// Prepare Image Variables
+				var image = $('#image').prop('files')[0];
+				var hasImage = ($('#image').get(0).files.length === 0) ? "false" : "true";
+				
+				// Prepare record IDs
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				var company = JSON.parse(sessionStorage.getItem("company"));
+				
+				// Create Form Data
+				var formData = new FormData();
+				formData.append("update", "set");
+				formData.append("contact_no",contact_no);
+				formData.append("address",address);
+				formData.append("user_name",user_name);
+				formData.append("user_contact_no",user_contact_no);
+				formData.append("password",password);
+				formData.append("c_password",c_password);
+				formData.append("image", image);
+				formData.append("hasImage", hasImage);
+				formData.append("user_id", user["user_id"]);
+				formData.append("company_id", company["company_id"]);
+				
+				// Send AJAX request
+				$.ajax({
+					type: "POST",
+					url: "MyProfile_action_page.php",
+					data: formData,             
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data)
+					{
+						console.log(data);
+						var obj = JSON.parse(data);
+						console.log(obj);
+						if(obj["alert"] == "danger"){
+						
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+						else if(obj["alert"] == "success"){
+						
+							// Update sessionStorage record data
+							sessionStorage.setItem("user", JSON.stringify(obj["user"]));
+							var user = JSON.parse(sessionStorage.getItem("user"));
+							sessionStorage.setItem("company", JSON.stringify(obj["company"]));
+							var company = JSON.parse(sessionStorage.getItem("company"));
+							
+							// If image was uploaded, update the avatar
+							if(obj["update_avatar"] && obj["update_avatar"] == "true"){
+								$("#avatar_image").attr("src",company["image_location"]);
+							}
+							
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+					}
+				});
+			}
+		});
+	</script>
+</html>

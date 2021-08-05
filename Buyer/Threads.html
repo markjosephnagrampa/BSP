@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Threads</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "SearchItem">Search Item</a></li>
+						<li class = "active"><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "ReportSeller">Report Seller</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" id = "avatar_name">Buyer Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Messaged Threads</span></div>
+						<div class="panel-body">
+							<div class = "table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr style = "font-size: 1.25em;">
+											<th></th>
+											<th>Item Name</th>
+											<th>Price</th>
+											<th>Seller</th>
+											<th>Thread Status</th>
+											<th>Date Posted</th>
+											<th>Date Commented</th>
+											<th>View</th>
+										</tr>
+									</thead>
+									<tbody style = "font-size: 1em;" id = "threads_container">
+										<!--
+										<tr>
+											<td><img src = "../img/img_avatar3.png" class="small-image"></td>
+											<td>Treasure Island</td>
+											<td>Php 500.00</td>
+											<td>National Book Store</td>
+											<td>Feb 14, 2021</td>
+											<td>Feb 15, 2021</td>
+											<td><button type="button" id = "view_item_thread" class="btn btn-default"><span class = "glyphicon glyphicon-eye-open"></span></button></td>
+										</tr>
+										-->
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#SearchItem").click(function()
+		{
+			window.location.replace("SearchItem.html");
+		});
+		
+		$("#Threads").click(function()
+		{
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			window.location.replace("Messages.html");
+		});
+		
+		$("#ReportSeller").click(function()
+		{
+			window.location.replace("ReportSeller.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "buyer"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			// Load Item Thread Info
+			
+			var formData = new FormData();
+			formData.append("Threads", "set");
+			formData.append("user_id", user["user_id"]);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "Threads_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["item_threads"]){
+					
+						// Load comments
+						// A. Item Details
+						for(i = 0, len = obj["item_threads_count"]; i < len; i++){
+							var html_element = ' \
+									<tr> \
+										<td><img src = "'+obj["item_threads"][i]["image_location"]+'" class="small-image"></td> \
+										<td>'+obj["item_threads"][i]["book_title"]+'</td> \
+										<td>Php '+obj["item_threads"][i]["price"]+'</td> \
+										<td>'+obj["item_threads"][i]["name"]+'</td> \
+										<td>'+obj["item_threads"][i]["is_closed"]+'</td> \
+										<td>'+obj["item_threads"][i]["date_created"]+'</td> \
+										<td>'+obj["item_threads"][i]["date_commented"]+'</td> \
+										<td><button type="button" id = "view_item_thread'+obj["item_threads"][i]["item_thread_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-eye-open"></span></button></td> \
+									</tr> \
+								';
+							
+							$("#threads_container").append(html_element);
+						}
+						
+						$("html").css("visibility","visible");
+					}
+					else{
+						var html_element = ' \
+								<tr> \
+									<td colspan = "8" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">You haven\'t commented on any item thread posts.</span></td> \
+								</tr> \
+							';
+						$("#threads_container").append(html_element);
+						$("html").css("visibility","visible");
+					}
+				}
+			});
+		});
+		// Pass ID of selected thread to the view thread page
+		$(document).on("click", '[id^=view_item_thread]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			sessionStorage.removeItem("item_thread_id");
+			sessionStorage.setItem("item_thread_id",id);
+			window.location.replace("ViewThread.html");
+		});
+	</script>
+</html>

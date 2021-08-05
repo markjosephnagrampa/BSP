@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | View Thread</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "SearchItem">Search Item</a></li>
+						<li><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li><a href="javascript:;" id = "ReportSeller">Report Seller</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" id = "avatar_name">Buyer Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container-fluid">
+			<div class = "row">
+				<div class = "col-sm-4">&nbsp;</div>
+				<div class = "col-sm-4">
+					<div class="panel panel-default" style = "border-color: gray;">
+						<div class="panel-body" id = "item_panel">
+							<div class="thumbnail" id = "item_thread_image" style = "width: 200px; max-width: 200px; margin: auto;">
+							</div>
+							<!--
+							<table class = "table table-bordered" style = "margin-top: 1em;">
+								
+								<tr>
+									<th>Book Title:</th>
+									<td>Treasure Island</td>
+								</tr>
+								<tr>
+									<th>Author:</th>
+									<td>Charles Duhigg</td>
+								</tr>
+								<tr>
+									<th>Genre:</th>
+									<td>Fantasy</td>
+								</tr>
+								<tr>
+									<th>Price:</th>
+									<td>Php 500.00</td>
+								</tr>
+								<tr>
+									<th>Binding Type:</th>
+									<td>Perfect Binding (Softcover)</td>
+								</tr>
+							</table>
+							-->
+						</div>
+					</div>
+				</div>
+				<div class = "col-sm-4">&nbsp;</div>
+			</div>
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+				<div class = "col-sm-8 col-md-6" id = "comment_holder">
+					<!--
+					<div class="media">
+						<div class="media-left">
+							<img src="../img/img_avatar5.png" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">John Doe |<small><i> <span class = "glyphicon glyphicon-envelope"></span> nbs@gmail.com | <span class = "glyphicon glyphicon-calendar"></span> Feb 19, 2016 - 8:15 am</i></small></h4>
+							<p class = "text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+						</div>
+					</div>
+					-->
+				</div>
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+			</div>
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+				<div class = "col-sm-8 col-md-6">
+					<div class = "text-center" id = "is_closed_prompt">
+					</div>
+					<div id="alert_div">
+					</div>
+				</div>
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+			</div>
+			<form onsubmit = "return false">
+			<div class = "row">
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+				<div class = "col-sm-8 col-md-6">
+					<div class="form-group">
+						<div class="col-sm-12">
+							<textarea class="form-control" rows="5" maxlength = "2000" id="comment" name = "comment" placeholder="Please type your comment here." required></textarea>
+						</div>
+					</div>
+				</div>
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+			</div>
+			<div class = "row" style = "margin-top: 1em;">
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+				<div class = "col-sm-8 col-md-6">
+					<div class="form-group">
+						<div class = "col-sm-12 text-center">
+							<button type="submit" id = "btn_comment" class="btn btn-lg btn-default"><span class = "glyphicon glyphicon-comment"></span> Comment</button>
+						</div>
+					</div>
+				</div>
+				<div class = "col-sm-2 col-md-3">&nbsp;</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#SearchItem").click(function()
+		{
+			sessionStorage.removeItem("item_thread_id");
+			window.location.replace("SearchItem.html");
+		});
+		
+		$("#Threads").click(function()
+		{
+			sessionStorage.removeItem("item_thread_id");
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			sessionStorage.removeItem("item_thread_id");
+			window.location.replace("Messages.html");
+		});
+		
+		$("#ReportSeller").click(function()
+		{
+			sessionStorage.removeItem("item_thread_id");
+			window.location.replace("ReportSeller.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			sessionStorage.removeItem("item_thread_id");
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "buyer"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Check if item_thread_id was set
+			if(sessionStorage.getItem("item_thread_id") === null){
+				window.location.replace("Threads.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			// Load Item Thread Info
+			
+			var formData = new FormData();
+			formData.append("view_thread", "set");
+			formData.append("item_thread_id", sessionStorage.getItem("item_thread_id"));
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "ViewThread_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["item_thread"]){
+					
+						// Load item_thread record and comments
+						
+						// A. Item Details
+						var html_element = ' \
+								<table class = "table table-bordered" style = "margin-top: 1em;"> \
+									<tr> \
+										<th>Book Title:</th> \
+										<td>'+obj["item_thread"]["book_title"]+'</td> \
+									</tr> \
+									<tr> \
+										<th>Author:</th> \
+										<td>'+obj["item_thread"]["author"]+'</td> \
+									</tr> \
+									<tr> \
+										<th>Genre:</th> \
+										<td>'+obj["item_thread"]["genre"]+'</td> \
+									</tr> \
+									<tr> \
+										<th>Price:</th> \
+										<td>Php '+obj["item_thread"]["price"]+'</td> \
+									</tr> \
+									<tr> \
+										<th>Binding Type:</th> \
+										<td>'+obj["item_thread"]["binding_type"]+'</td> \
+									</tr> \
+								</table> \
+							';
+						$("#item_panel").append(html_element);
+						
+						// B. Item Image
+						var html_element = ' \
+								<a href="'+obj["item_thread"]["image_location"]+'" target = "_blank"> \
+								<img src="'+obj["item_thread"]["image_location"]+'" class = "img-responsive" alt="'+obj["item_thread"]["book_title"]+'" style="width:100%"> \
+								</a> \
+							';
+						$("#item_thread_image").html(html_element);
+						
+						// C. Comments
+						for(i = 0, len = obj["comments_count"]; i < len; i++){
+						
+							var html_element = ' \
+								<div class="media"> \
+									<div class="media-left"> \
+										<img src="'+obj["comments"][i]["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+									</div> \
+									<div class="media-body"> \
+										<h4 class="media-heading">'+obj["comments"][i]["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+obj["comments"][i]["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["comments"][i]["datetime_created"]+'</i></small></h4> \
+										<p class = "text-justify">'+obj["comments"][i]["message"]+'</p> \
+									</div> \
+								</div> \
+							';
+							$("#comment_holder").append(html_element);
+						}
+						
+						// D. Toggle Comment Control Based on the Status of the Thread
+						if(obj["item_thread_is_closed"] == "1"){
+							$("#btn_comment").prop("disabled",true);
+							$("#comment").prop("disabled",true);
+							$("#is_closed_prompt").html("<span style = 'font-style: italic; font-size: 1.25em;'><span class = 'glyphicon glyphicon-exclamation-sign'> </span> This thread is closed. Comments are currently disabled.</span>");
+						}
+						
+						$("html").css("visibility","visible");
+					}
+					else{
+						window.location.replace("Threads.html");
+					}
+				}
+			});
+		});
+		
+		$("#btn_comment").click(function()
+		{
+			
+			// Prepare Required Form Variables
+			var comment = $("#comment").val();
+			
+			if(comment){
+				// Prepare record IDs
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				
+				// Create Form Data
+				var formData = new FormData();
+				formData.append("btn_comment", "set");
+				formData.append("message",comment);
+				formData.append("item_thread_id",sessionStorage.getItem("item_thread_id"));
+				formData.append("user_id", user["user_id"]);
+				
+				// Send AJAX request
+				$.ajax({
+					type: "POST",
+					url: "ViewThread_action_page.php",
+					data: formData,             
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data)
+					{
+						console.log(data);
+						var obj = JSON.parse(data);
+						console.log(obj);
+						if(obj["alert"] == "danger"){
+						
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+						else if(obj["alert"] == "success"){
+						
+							// append new comment into the display
+							var html_element = ' \
+								<div class="media"> \
+									<div class="media-left"> \
+										<img src="'+user["image_location"]+'" class="media-object img-circle" style="width:45px; height: 45px; max-width: 45px; max-height: 45px;"> \
+									</div> \
+									<div class="media-body"> \
+										<h4 class="media-heading">'+user["name"]+' |<small><i> <span class = "glyphicon glyphicon-envelope"></span> '+user["email"]+' | <span class = "glyphicon glyphicon-calendar"></span> '+obj["comments"]["datetime_created"]+'</i></small></h4> \
+										<p class = "text-justify">'+obj["comments"]["message"]+'</p> \
+									</div> \
+								</div> \
+							';
+							$("#comment_holder").append(html_element);
+							
+							// Remove textarea content
+							$("#comment").val("");
+							
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+					}
+				});
+			}
+		});
+	</script>
+</html>

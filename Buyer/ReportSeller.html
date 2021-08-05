@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Report Seller</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "SearchItem">Search Item</a></li>
+						<li><a href="javascript:;" id = "Threads">Threads</a></li>
+						<li><a href="javascript:;" id = "Messages">Messages</a></li>
+						<li class = "active"><a href="javascript:;" id = "ReportSeller">Report Seller</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" id = "avatar_name">Buyer Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div id = "alert_div">
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Incident Details </span></div>
+				<div class="panel-body">
+					<form class="form-horizontal" onsubmit = "return false">
+						<div class = "form-group">
+							<div class = "col-sm-12"><img id = "output" src = "https://via.placeholder.com/500x250" class="img-responsive" style = "max-height: 250px; max-width: 500px; margin: auto;"></div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="email"><span style = "color: red;">*</span> Seller's Email:</label>
+							<div class="col-sm-10">
+								<input type="email" class="form-control" id="email" name = "email" placeholder="Enter Email" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="violation"><span style = "color: red;">*</span> Violation:</label>
+							<div class="col-sm-10">
+								<select class="form-control" id="violation" name = "violation" required>
+									<option selected disabled>Select Category</option>
+									<option value = "Failure to deliver purchased items">Failure to deliver purchased items</option>
+									<option value = "Damaged item">Damaged item</option>
+									<option value = "Foul/Obscene messages or comments">Foul/Obscene messages or comments</option>
+									<option value = "Other">Other</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="image"><span style = "color: red;">*</span> Screenshot / Image Proof:</label>
+							<div class="col-sm-10">
+								<input class = "form-control" type="file" accept="image/*" name="image" id="image"  onchange="loadFile(event)" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="comment"><span style = "color: red;">*</span> Explanation:</label>
+							<div class="col-sm-10">
+								<textarea class="form-control" rows="5" maxlength = "2000" id="comment" name = "comment" placeholder="Please provide a brief explanation of the incident." required></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-12" style = "text-align: center;">
+								<button type="submit" id = "report_seller" name = "report_seller" class="btn btn-danger btn-lg">Report Seller</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#SearchItem").click(function()
+		{
+			window.location.replace("SearchItem.html");
+		});
+		
+		$("#Threads").click(function()
+		{
+			window.location.replace("Threads.html");
+		});
+		
+		$("#Messages").click(function()
+		{
+			window.location.replace("Messages.html");
+		});
+		
+		$("#ReportSeller").click(function()
+		{
+			window.location.replace("ReportSeller.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "buyer"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			$("html").css("visibility","visible");
+		});
+		
+		$("#report_seller").click(function()
+		{
+			
+			// Prepare Required Form Variables
+			var email = $("#email").val();
+			var violation = $("#violation").val();
+			var comment = $("#comment").val();
+			
+			// Prepare Image Variables
+			var image = $('#image').prop('files')[0];
+			var hasImage = ($('#image').get(0).files.length === 0) ? "false" : "true";
+			
+			if(email && violation && comment && hasImage == "true" && $("#violation").prop('selectedIndex') != 0){
+				
+				// Prepare record IDs
+				var user = JSON.parse(sessionStorage.getItem("user"));
+				
+				// Create Form Data
+				var formData = new FormData();
+				formData.append("report_seller", "set");
+				formData.append("email",email);
+				formData.append("violation",violation);
+				formData.append("comment",comment);
+				formData.append("image",image);
+				formData.append("hasImage",hasImage);
+				formData.append("user_id", user["user_id"]);
+				
+				// Send AJAX request
+				$.ajax({
+					type: "POST",
+					url: "ReportSeller_action_page.php",
+					data: formData,             
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function(data)
+					{
+						console.log(data);
+						var obj = JSON.parse(data);
+						console.log(obj);
+						if(obj["alert"] == "danger"){
+						
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+						else if(obj["alert"] == "success"){
+						
+							// Remove Form Input Data
+							$("#email").val("");
+							$("#comment").val("");
+							$("#violation").prop('selectedIndex', 0);
+							$("#image").val("");
+							$("#output").prop("src","https://via.placeholder.com/500x250");
+							
+							// Display alert message
+							var html_element = ' \
+									<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+											<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+											<strong>'+obj["message"]+'</strong> \
+										</div> \
+								';
+							$("#alert_div").html(html_element);
+							//$("#alert_div").css("padding-top","50px");
+						}
+					}
+				});
+			}
+			// Required Select Value Check
+			else if($("#violation").prop('selectedIndex') == 0){
+				// Display alert message
+				var html_element = ' \
+						<div id = "alert" class="alert alert-danger fade in"> \
+								<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+								<strong>Please select a violation.</strong> \
+							</div> \
+					';
+				$("#alert_div").html(html_element);
+				//$("#alert_div").css("padding-top","50px");
+			}
+		});
+	</script>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | View Complaint</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			.collapse-row.collapsed + tr {
+			display: none;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li><a href="javascript:;" id = "CompaniesForValidation">Companies for Validation</a></li>
+						<li><a href="javascript:;" id = "Announcements">Announcements</a></li>
+						<li><a href="javascript:;" id = "Accounts">Accounts</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Admin Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class = "row">
+				<div class="panel panel-default">
+					<div class="panel-heading text-center" id = "panel_heading"><span style = "font-weight: bold; font-size: 1.5em;">Complaints</span></div>
+					<div class="panel-body">
+						<div id="accordion">
+							<table class="table table-hover">
+								<thead>
+									<tr style = "font-size: 1.25em;">
+										<th>Date Submitted</th>
+										<th>Violation</th>
+										<th>Incident Description</th>
+										<th>Screenshot</th>
+										<th>Plaintiff</th>
+										<th>View More</th>
+									</tr>
+								</thead>
+								<tbody id = "complaints_container">
+									<!--
+									<tr data-toggle="collapse" data-target="#collapse1" class="clickable collapse-row collapsed">
+										<td>Feb 14, 2021</td>
+										<td>Profanity</td>
+										<td>123456789 123456789 123456789 123456789</td>
+										<td><img src="https://via.placeholder.com/500x250" class = "img-responsive" alt="Nature" style="height: 64px; width: 128px; max-height: 64px; max-width: 128px;"></td>
+										<td>Mark Nagrampa</td>
+										<td><button class = "btn btn-default" data-toggle="collapse" data-parent="#accordion" href="#collapse1"><span class = "glyphicon glyphicon-eye-open"></span></button></td>
+									</tr>
+									<tr>
+										<td colspan = "6">
+											<div class="panel panel-default">
+												<div id="collapse1" class="panel-collapse collapse">
+													<div class="panel-body">
+														<div class="thumbnail" style = "width: 500px; max-width: 500px; margin: auto;">
+															<a href="../img/carousel-1.jpg" target = "_blank">
+															<img src="https://via.placeholder.com/500x250" class = "img-responsive" alt="Nature" style="width:100%">
+															</a>
+														</div>
+														<table class = "table" style = "margin-top: 1em;">
+															<tr>
+																<th>Incident Description</th>
+															</tr>
+															<tr>
+																<td class = "text-justify">
+																	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+																	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+																	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+																	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+																</td>
+															</tr>
+														</table>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+									-->
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		function hideAlert2(){
+			$("#alert2").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#CompaniesForValidation").click(function()
+		{
+			sessionStorage.removeItem("accounts_id");
+			sessionStorage.removeItem("is_company");
+			window.location.replace("CompaniesForValidation.html");
+		});
+		
+		$("#Announcements").click(function()
+		{
+			sessionStorage.removeItem("accounts_id");
+			sessionStorage.removeItem("is_company");
+			window.location.replace("Announcements.html");
+		});
+		
+		$("#Accounts").click(function()
+		{
+			sessionStorage.removeItem("accounts_id");
+			sessionStorage.removeItem("is_company");
+			window.location.replace("Accounts.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			sessionStorage.removeItem("accounts_id");
+			sessionStorage.removeItem("is_company");
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "admin"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Check if this page came from Accounts.html
+			if(sessionStorage.getItem("accounts_id") === null || sessionStorage.getItem("is_company") === null){
+				window.location.replace("Accounts.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			// Load Item Thread Info
+			
+			var formData = new FormData();
+			formData.append("ViewComplaint", "set");
+			formData.append("accounts_id", sessionStorage.getItem("accounts_id"));
+			formData.append("is_company", sessionStorage.getItem("is_company"));
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "ViewComplaint_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["complaints"] != null){
+					
+						// Load accused name
+						$("#panel_heading").html('<span style = "font-weight: bold; font-size: 1.5em;">Complaints | '+obj["accused"]+' </span>');
+						
+						// Load complaints
+						for(i = 0, len = obj["complaints_count"]; i < len; i++){
+							var short_message = obj["complaints"][i]["message"];
+							if(short_message.length > 40){
+								short_message = short_message.substring(0,40) + "...";
+							}
+							
+							var html_element = ' \
+									<tr data-toggle="collapse" data-target="#collapse'+obj["complaints"][i]["complaint_id"]+'" class="clickable collapse-row collapsed"> \
+										<td>'+obj["complaints"][i]["date_created"]+'</td> \
+										<td>'+obj["complaints"][i]["complaint_type"]+'</td> \
+										<td>'+short_message+'</td> \
+										<td><img src="'+obj["complaints"][i]["image_location"]+'" class = "img-responsive" style="height: 64px; width: 128px; max-height: 64px; max-width: 128px;"></td> \
+										<td>'+obj["complaints"][i]["name"]+'</td> \
+										<td><button class = "btn btn-default" data-toggle="collapse" data-parent="#accordion" href="#collapse'+obj["complaints"][i]["complaint_id"]+'"><span class = "glyphicon glyphicon-eye-open"></span></button></td> \
+									</tr> \
+									<tr> \
+										<td colspan = "6"> \
+											<div class="panel panel-default"> \
+												<div id="collapse'+obj["complaints"][i]["complaint_id"]+'" class="panel-collapse collapse"> \
+													<div class="panel-body"> \
+														<div class="thumbnail" style = "width: 500px; max-width: 500px; margin: auto;"> \
+															<a href="'+obj["complaints"][i]["image_location"]+'" target = "_blank"> \
+															<img src="'+obj["complaints"][i]["image_location"]+'" class = "img-responsive" style="width:100%"> \
+															</a> \
+														</div> \
+														<table class = "table" style = "margin-top: 1em;"> \
+															<tr> \
+																<th>Incident Description</th> \
+															</tr> \
+															<tr> \
+																<td class = "text-justify"> \
+																	'+obj["complaints"][i]["message"]+' \
+																</td> \
+															</tr> \
+														</table> \
+													</div> \
+												</div> \
+											</div> \
+										</td> \
+									</tr> \
+								';
+							
+							$("#complaints_container").append(html_element);
+						}
+						
+						if(obj["complaints_count"] == "0"){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "6" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No complaints were filed against this account.</span></td> \
+								</tr> \
+							';
+							$("#complaints_container").html(html_element);
+						}
+						
+						$("html").css("visibility","visible");
+					}
+				}
+			});
+		});
+	</script>
+</html>

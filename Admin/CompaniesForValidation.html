@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>BSP | Companies for Validation</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../css/myStyles.css">
+		<link rel="icon" href="../img/logo2.ico">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<style>
+			body{
+			padding-top: 80px;
+			}
+			html{
+				visibility: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" style = "font-size: 1.5em; font-weight: bold;">Book Sale Portal</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav" style = "text-align: center;">
+						<li class = "active"><a href="javascript:;" id = "CompaniesForValidation">Companies for Validation</a></li>
+						<li><a href="javascript:;" id = "Announcements">Post Announcement</a></li>
+						<li><a href="javascript:;" id = "Accounts">Accounts</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right" style = "text-align: center;">
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" id = "avatar_name">Admin Account <span class="caret"></span></a>
+							<ul class="dropdown-menu" style = "text-align: center;">
+								<li><a href="javascript:;" id = "MyProfile"><span class = "glyphicon glyphicon-user"></span> My Profile</a></li>
+								<li><a href="javascript:;" id = "Sign_Out"><span class = "glyphicon glyphicon-off"></span> Sign Out</a></li>
+							</ul>
+						<li><img src = "https://via.placeholder.com/32" class="img-circle user-avatar" id = "avatar_image"></li>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container-fluid">
+			<div class = "row">
+				<div class = "col-sm-1">
+					&nbsp;
+				</div>
+				<div class = "col-sm-10">
+					<div id = "alert_div">
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><span style = "font-weight: bold; font-size: 1.5em;">Pending Company Accounts </span></div>
+						<div class="panel-body">
+							<div class = "table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr style = "font-size: 1.25em;">
+											<th></th>
+											<th>Company Name</th>
+											<th>Address</th>
+											<th>Contact No</th>
+											<th>Email Address</th>
+											<th>Contact Person</th>
+											<th>Contact No.</th>
+											<th>Approve</th>
+											<th>Deny</th>
+										</tr>
+									</thead>
+									<tbody style = "font-size: 1em;" id = "companies_container">
+										<!--
+										<tr>
+											<td><img src = "../img/img_avatar3.png" class="img-circle small-image"></td>
+											<td>National Book Store</td>
+											<td>924 Assisi St., Cittadella Village, Las Pinas City</td>
+											<td>02-888-1234</td>
+											<td>nbs@gmail.com</td>
+											<td>Alee Ciaral P. Policarpio</td>
+											<td>0917-123-1234</td>
+											<td><button type="button" class="btn btn-default"><span class = "glyphicon glyphicon-ok"></span></button></td>
+											<td><button type="button" class="btn btn-default"><span class = "glyphicon glyphicon-remove"></span></button></td>
+										</tr>
+										-->
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class = "col-sm-1">
+						&nbsp;
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[0]);
+		};
+		
+		function hideAlert(){
+			$("#alert").fadeOut();
+		}
+		
+		// Page Redirects (for back button prevention)
+		$("#CompaniesForValidation").click(function()
+		{
+			window.location.replace("CompaniesForValidation.html");
+		});
+		
+		$("#Announcements").click(function()
+		{
+			window.location.replace("Announcements.html");
+		});
+		
+		$("#Accounts").click(function()
+		{
+			window.location.replace("Accounts.html");
+		});
+		
+		$("#MyProfile").click(function()
+		{
+			window.location.replace("MyProfile.html");
+		});
+		
+		$("#Sign_Out").click(function()
+		{
+			// Clear Session storage and redirect to home page
+			sessionStorage.clear();
+			window.location.replace("../Login.html");
+		});
+		
+		$(document).ready(function()
+		{
+			// Check if user is logged in
+			if (sessionStorage.getItem("user") === null) {
+			  window.location.replace("../InvalidAccess.html");
+			}
+			// Load company data on the profile page
+			var user = JSON.parse(sessionStorage.getItem("user"));
+			
+			// Check Account Type
+			if(user["user_type"] != "admin"){
+				window.location.replace("../InvalidAccess.html");
+			}
+			
+			// Load personalized data on the profile page
+			if(user["image_location"] != null && user["image_location"].length != 0){
+				$("#avatar_image").attr("src",user["image_location"]);
+			}
+			
+			$("#avatar_name").html(user["name"]+'<span class="caret"></span>');
+			
+			// Load Item Thread Info
+			
+			var formData = new FormData();
+			formData.append("CompaniesForValidation", "set");
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "CompaniesForValidation_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["companies"]){
+					
+						// Load companies
+						for(i = 0, len = obj["companies_count"]; i < len; i++){
+							var html_element = ' \
+									<tr id = "company'+obj["companies"][i]["company_id"]+'"> \
+										<td><img src = "'+obj["companies"][i]["image_location"]+'" class="img-circle small-image"></td> \
+										<td>'+obj["companies"][i]["name"]+'</td> \
+										<td>'+obj["companies"][i]["address"]+'</td> \
+										<td>'+obj["companies"][i]["contact_no"]+'</td> \
+										<td>'+obj["companies"][i]["email"]+'</td> \
+										<td>'+obj["companies"][i]["users_name"]+'</td> \
+										<td>'+obj["companies"][i]["users_contact_no"]+'</td> \
+										<td><button type="button" id = "approve_company'+obj["companies"][i]["company_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-ok"></span></button></td> \
+										<td><button type="button" id = "deny_company'+obj["companies"][i]["company_id"]+'" class="btn btn-default"><span class = "glyphicon glyphicon-remove"></span></button></td> \
+									</tr> \
+								';
+							
+							$("#companies_container").append(html_element);
+						}
+						
+						if(obj["companies_count"] == "0"){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "9" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No pending companies for verification found.</span></td> \
+								</tr> \
+							';
+							$("#companies_container").html(html_element);
+						}
+						
+						$("html").css("visibility","visible");
+					}
+				}
+			});
+		});
+		// Toggle Selected Record on open button click
+		$(document).on("click", '[id^=approve_company]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("approve_company", "set");
+			formData.append("company_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "CompaniesForValidation_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						//$("#alert_div").css("padding-top","50px");
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						
+						// Remove altered company from the pending list table
+						$("#company"+obj["id"]).remove();
+						
+						// Check if blank text should be displayed
+						if($('#companies_container').children('tr').length == 0){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "9" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No pending companies for verification found.</span></td> \
+								</tr> \
+							';
+							$("#companies_container").html(html_element);
+						}
+						 
+						//$("#alert_div").css("padding-top","50px");
+					}
+				}
+			});
+		});
+		
+		// Toggle Selected Record on close button click
+		$(document).on("click", '[id^=deny_company]', function(event) { 
+			var id = this.id.match(/[0-9]+/);
+			
+			var formData = new FormData();
+			formData.append("deny_company", "set");
+			formData.append("company_id", id);
+			
+			// Send AJAX request
+			$.ajax({
+				type: "POST",
+				url: "CompaniesForValidation_action_page.php",
+				data: formData,             
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data)
+				{
+					console.log(data);
+					var obj = JSON.parse(data);
+					console.log(obj);
+					if(obj["alert"] == "danger"){
+					
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						//$("#alert_div").css("padding-top","50px");
+					}
+					else if(obj["alert"] == "success"){
+						
+						// Display alert message
+						var html_element = ' \
+								<div id = "alert" class="alert alert-'+obj["alert"]+' fade in"> \
+										<a class="close" onClick="hideAlert();" aria-label="close">&times;</a> \
+										<strong>'+obj["message"]+'</strong> \
+									</div> \
+							';
+						$("#alert_div").html(html_element);
+						
+						// Remove altered company from the pending list table
+						$("#company"+obj["id"]).remove();
+						
+						// Check if blank text should be displayed
+						if($('#companies_container').children('tr').length == 0){
+							var html_element = ' \
+								<tr> \
+									<td colspan = "9" class = "text-center"><span style = "font-style: italic; font-size: 1.25em;">No pending companies for verification found.</span></td> \
+								</tr> \
+							';
+							$("#companies_container").html(html_element);
+						}
+						
+						//$("#alert_div").css("padding-top","50px");
+					}
+				}
+			});
+		});
+	</script>
+</html>

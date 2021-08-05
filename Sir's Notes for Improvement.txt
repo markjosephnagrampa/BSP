@@ -1,0 +1,9 @@
+1. Checkbox for User Agreement in Homepage
+2. Blacklisted Accounts Can Be Deleted Permanently After a Period
+3. Stricter Queries for non auto page reloads
+4. Place a particular platform where this website was intended to be used (ie. desktop, chrome, mobile)
+5. Make Seller Threads table more informative. Include the ff: info:
+	- Last visited by seller
+	- Update since last visited
+	- Email PHP
+6. For db backups, one can do a second database which keeps track of when db transactions are made on the "real" db.
